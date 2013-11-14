@@ -45,9 +45,9 @@ from adhocracy.lib.templating import render, render_json, ret_abort, render_png
 from adhocracy.lib.templating import ret_success
 from adhocracy.lib.queue import update_entity
 from adhocracy.lib.util import get_entity_or_abort, random_token
-
 from adhocracy.lib.event.types import (S_VOTE, S_DELEGATION, S_PROPOSAL,
                                        S_COMMENT, S_PAGE, S_CONTRIBUTION)
+from adhocracy.model.login import Login 
 
 
 log = logging.getLogger(__name__)
@@ -1043,6 +1043,8 @@ class UserController(BaseController):
         pass  # managed by repoze.who
 
     def post_login(self):
+        #call log login entry function
+        Login.store_login_attempt()
         if c.user:
             session['logged_in'] = True
             session.save()
@@ -1056,8 +1058,7 @@ class UserController(BaseController):
                 redirect(h.user.post_login_url(c.user))
         else:
             login_configuration = h.allowed_login_types()
-            error_message = _("Invalid login")
-
+            error_message = _("Invalid login")   
             if 'username+password' in login_configuration:
                 if 'email+password' in login_configuration:
                     error_message = _("Invalid email / user name or password")
