@@ -49,7 +49,6 @@ from adhocracy.lib.event.types import (S_VOTE, S_DELEGATION, S_PROPOSAL,
                                        S_COMMENT, S_PAGE, S_CONTRIBUTION)
 from adhocracy.model.login import Login 
 
-
 log = logging.getLogger(__name__)
 
 
@@ -1043,8 +1042,8 @@ class UserController(BaseController):
         pass  # managed by repoze.who
 
     def post_login(self):
-        #call log login entry function
-        Login.store_login_attempt()
+        user_log = model.Login.store_login_attempt(
+                datetime.utcnow, 123, self.form_result.get("user_name")) #ip just placeholder
         if c.user:
             session['logged_in'] = True
             session.save()
