@@ -38,7 +38,7 @@ class Login(meta.Indexable):
         self.user = user
     
     @classmethod
-    def store_login_attempt(cls, ):
+    def store_login_attempt(cls, access_time, ip_adress, user ):
         l = Login(access_time, ip_adress, user)
         meta.Session.add(l)
         meta.Session.flush()

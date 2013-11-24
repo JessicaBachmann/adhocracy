@@ -54,6 +54,7 @@ from adhocracy.model.requestlog import RequestLog, requestlog_table
 from adhocracy.model.message import Message, message_table
 from adhocracy.model.message import MessageRecipient, message_recipient_table
 from adhocracy.model.votedetail import votedetail_table
+from adhocracy.model.login import Login
 
 
 mapper(User, user_table, properties={

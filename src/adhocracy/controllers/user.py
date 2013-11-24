@@ -19,6 +19,8 @@ from webob.exc import HTTPFound
 
 from repoze.who.api import get_api
 
+from datetime import datetime
+
 from adhocracy import config
 from adhocracy import forms, model
 from adhocracy import i18n
@@ -1043,7 +1045,7 @@ class UserController(BaseController):
 
     def post_login(self):
         user_log = model.Login.store_login_attempt(
-                datetime.utcnow, 123, self.form_result.get("user_name")) #ip just placeholder
+                datetime.utcnow, 123, "test") #ip just placeholder
         if c.user:
             session['logged_in'] = True
             session.save()
