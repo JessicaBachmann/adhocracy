@@ -506,6 +506,15 @@ mapper(MessageRecipient, message_recipient_table, properties={
     ),
 })
 
+mapper(Log, login_table, properties={
+    'access_time': synonym('_access', map_column=True),
+    'user': synonym('_user', map_column=True),
+    'ip_adress'synonym('_ip', map_column=True)
+})
+    
+
+    
+
 
 DELETE = "delete"
 INSERT = "insert"
