@@ -25,6 +25,7 @@ from sqlalchemy import MetaData
 
 login_table = Table(
     'loginlog', meta.data,
+    Column('id', Integer, primary_key=True),
     Column('access_time', DateTime, default=datetime.utcnow),
     Column('ip_address', Unicode(255), nullable=True),
     Column('user', UnicodeText()),
@@ -33,7 +34,7 @@ login_table = Table(
 class Login(meta.Indexable):
     
     def __init__(self, access_time, ip_adress, user):
-        self.access_time = datetime.utcnow
+        self.access_time = datetime.utcnow()
         self.ip_address = ip_adress
         self.user = user
     

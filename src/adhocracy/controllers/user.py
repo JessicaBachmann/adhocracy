@@ -1045,7 +1045,7 @@ class UserController(BaseController):
 
     def post_login(self):
         user_log = model.Login.store_login_attempt(
-                datetime.utcnow, 123, "test") #ip just placeholder
+                datetime.utcnow(), 123, "test") #ip just placeholder
         if c.user:
             session['logged_in'] = True
             session.save()

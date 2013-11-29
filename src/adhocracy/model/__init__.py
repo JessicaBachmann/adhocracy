@@ -54,7 +54,7 @@ from adhocracy.model.requestlog import RequestLog, requestlog_table
 from adhocracy.model.message import Message, message_table
 from adhocracy.model.message import MessageRecipient, message_recipient_table
 from adhocracy.model.votedetail import votedetail_table
-from adhocracy.model.login import Login
+from adhocracy.model.login import Login, login_table
 
 
 mapper(User, user_table, properties={
@@ -506,12 +506,13 @@ mapper(MessageRecipient, message_recipient_table, properties={
     ),
 })
 
-mapper(Log, login_table, properties={
+mapper(Login, login_table, properties={
     'access_time': synonym('_access', map_column=True),
     'user': synonym('_user', map_column=True),
-    'ip_adress'synonym('_ip', map_column=True)
+    'ip_address': synonym('_ip', map_column=True)
 })
-    
+
+  
 
     
 
