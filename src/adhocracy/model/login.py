@@ -29,18 +29,20 @@ login_table = Table(
     Column('access_time', DateTime, default=datetime.utcnow),
     Column('ip_address', Unicode(255), nullable=True),
     Column('user', UnicodeText()),
+    Column('success', UnicodeText(), default = 'yes')
 )
 
 class Login(meta.Indexable):
     
-    def __init__(self, access_time, ip_adress, user):
+    def __init__(self, access_time, ip_adress, user, success):
         self.access_time = datetime.utcnow()
         self.ip_address = ip_adress
         self.user = user
+        self.succes = success
     
     @classmethod
-    def store_login_attempt(cls, access_time, ip_adress, user ):
-        l = Login(access_time, ip_adress, user)
+    def store_login_attempt(cls, access_time, ip_adress, user, success):
+        l = Login(access_time, ip_adress, user, success)
         meta.Session.add(l)
         meta.Session.flush()
         meta.Session.commit()

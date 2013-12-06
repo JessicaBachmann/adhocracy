@@ -1045,7 +1045,7 @@ class UserController(BaseController):
 
     def post_login(self):
         user_log = model.Login.store_login_attempt(
-                datetime.utcnow(), 123, c.user.user_name) #ip just placeholder
+                datetime.utcnow(), 123, c.user_name, 'yes') #ip just placeholder
         if c.user:
             session['logged_in'] = True
             session.save()
@@ -1059,8 +1059,9 @@ class UserController(BaseController):
                 redirect(h.user.post_login_url(c.user))
         else:
             login_configuration = h.allowed_login_types()
-            error_message = _("Invalid login")   
-            if 'username+password' in login_configuration:
+            error_message = _("Invalid login")       
+
+            if 'username+password' in login_configuration:           
                 if 'email+password' in login_configuration:
                     error_message = _("Invalid email / user name or password")
                 else:
