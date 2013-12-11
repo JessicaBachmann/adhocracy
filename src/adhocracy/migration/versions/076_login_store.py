@@ -11,7 +11,7 @@ login_table = Table('loginlog', meta,
     Column('success', UnicodeText())
     )
 
+
 def upgrade(migrate_engine):
     meta.bind = migrate_engine
     login_table.create()
-
