@@ -27,7 +27,7 @@ login_table = Table(
     Column('access_time', DateTime, default=datetime.utcnow),
     Column('ip_address', Unicode(255), nullable=True),
     Column('user', UnicodeText()),
-    Column('success', UnicodeText(), default='yes')
+    Column('success', UnicodeText(), default=u'yes')
 )
 
 
