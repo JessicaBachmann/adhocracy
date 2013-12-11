@@ -1045,10 +1045,10 @@ class UserController(BaseController):
         pass  # managed by repoze.who
 
     def post_login(self):
-        full_ip = adhocracy.lib.util.get_client_ip(request.environ)
-        user_log = model.Login.store_login_attempt(
-                datetime.utcnow(), full_ip, c.user_name, 'yes') #ip just placeholder
         if c.user:
+            full_ip = adhocracy.lib.util.get_client_ip(request.environ)
+            user_log = model.Login.create(datetime.utcnow(),
+                                          full_ip, c.user_name, 'yes')
             session['logged_in'] = True
             session.save()
             came_from = request.params.get('came_from', None)
@@ -1061,9 +1061,8 @@ class UserController(BaseController):
                 redirect(h.user.post_login_url(c.user))
         else:
             login_configuration = h.allowed_login_types()
-            error_message = _("Invalid login")       
-
-            if 'username+password' in login_configuration:           
+            error_message = _("Invalid login")
+            if 'username+password' in login_configuration:
                 if 'email+password' in login_configuration:
                     error_message = _("Invalid email / user name or password")
                 else:
@@ -1071,7 +1070,6 @@ class UserController(BaseController):
             else:
                 if 'email+password' in login_configuration:
                     error_message = _("Invalid email or password")
-
             return self._render_loginform(errors={"login": error_message})
 
     def logout(self):

@@ -21,33 +21,34 @@ import meta
 from sqlalchemy import MetaData
 
 
-
-
 login_table = Table(
     'loginlog', meta.data,
     Column('id', Integer, primary_key=True),
     Column('access_time', DateTime, default=datetime.utcnow),
     Column('ip_address', Unicode(255), nullable=True),
     Column('user', UnicodeText()),
-    Column('success', UnicodeText(), default = 'yes')
+    Column('success', UnicodeText(), default='yes')
 )
 
+
 class Login(meta.Indexable):
-    
+
     def __init__(self, access_time, ip_adress, user, success):
         self.access_time = datetime.utcnow()
         self.ip_address = ip_adress
         self.user = user
         self.succes = success
-    
+
     @classmethod
-    def store_login_attempt(cls, access_time, ip_adress, user, success):
+    def get(cls, user):
+        l = meta.Session.query(cls)
+        l = l.filter(cls.user == user)
+        return l.last
+
+    @classmethod
+    def create(cls, access_time, ip_adress, user, success):
         l = Login(access_time, ip_adress, user, success)
         meta.Session.add(l)
         meta.Session.flush()
         meta.Session.commit()
         return l
-        
-        
-    
-    
