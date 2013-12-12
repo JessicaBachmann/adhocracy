@@ -510,13 +510,8 @@ mapper(Login, login_table, properties={
     'access_time': synonym('_access', map_column=True),
     'user': synonym('_user', map_column=True),
     'ip_address': synonym('_ip', map_column=True),
-    'success': synonym('_success', map_column=True) 
+    'success': synonym('_success', map_column=True)
 })
-
-  
-
-    
-
 
 DELETE = "delete"
 INSERT = "insert"
