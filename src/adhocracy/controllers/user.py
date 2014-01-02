@@ -1046,9 +1046,9 @@ class UserController(BaseController):
 
     def post_login(self):
         if c.user:
-            full_ip = adhocracy.lib.util.get_client_ip(request.environ)
-            user_log = model.Login.create(datetime.utcnow(),
-                                          full_ip, c.user_name, u'yes')
+#            full_ip = adhocracy.lib.util.get_client_ip(request.environ)
+#            user_log = model.Login.create(datetime.utcnow(),
+#                                          full_ip, c.user_name, u'yes')
             session['logged_in'] = True
             session.save()
             came_from = request.params.get('came_from', None)

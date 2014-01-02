@@ -12,10 +12,8 @@ from sqlalchemy import Boolean, DateTime, Integer, Unicode, UnicodeText
 from sqlalchemy.orm import eagerload_all
 
 from adhocracy.model import meta
-from adhocracy.model import instance_filter as ifilter
 from adhocracy.model.core import JSONEncodedDict
 from adhocracy.model.core import MutationDict
-from adhocracy.model.instance import Instance
 import logging
 import meta
 from sqlalchemy import MetaData
@@ -27,7 +25,7 @@ login_table = Table(
     Column('access_time', DateTime, default=datetime.utcnow),
     Column('ip_address', Unicode(255), nullable=True),
     Column('user', UnicodeText()),
-    Column('success', UnicodeText(), default=u'yes')
+    Column('success', UnicodeText())
 )
 
 
@@ -37,7 +35,7 @@ class Login(meta.Indexable):
         self.access_time = datetime.utcnow()
         self.ip_address = ip_adress
         self.user = user
-        self.succes = success
+        self.success = success
 
     @classmethod
     def get(cls, user):
