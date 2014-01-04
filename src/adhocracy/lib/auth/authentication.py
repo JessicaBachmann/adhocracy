@@ -16,6 +16,9 @@ from instance_auth_tkt import InstanceAuthTktCookiePlugin
 from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
 from pylons import config
 from webob import Request
+from adhocracy.model.login import Login, login_table
+from datetime import datetime
+import adhocracy.lib.util
 
 log = logging.getLogger(__name__)
 
@@ -74,7 +77,11 @@ class EmailSQLAlchemyAuthenticatorPlugin(_EmailBaseSQLAlchemyPlugin,
         if user:
             validator = getattr(user, self.translations['validate_password'])
             if validator(identity['password']):
+                user_log = model.login.Login.create(datetime.utcnow(),
+                                          123, user.user_name , u'yes')
                 return user.user_name
+            user_log = model.login.Login.create(datetime.utcnow(),
+                          123, user.user_name, u'no')
 
 
 class EmailSQLAlchemyUserMDPlugin(_EmailBaseSQLAlchemyPlugin,
