@@ -1,7 +1,7 @@
 import hashlib
 import os
 import logging
-from datetime import datetime
+import datetime
 
 from babel import Locale
 from pylons import config
@@ -22,7 +22,7 @@ from sqlalchemy import MetaData
 login_table = Table(
     'loginlog', meta.data,
     Column('id', Integer, primary_key=True),
-    Column('access_time', DateTime, default=datetime.utcnow),
+    Column('access_time', DateTime ),
     Column('ip_address', Unicode(255), nullable=True),
     Column('user', UnicodeText()),
     Column('success', UnicodeText())
@@ -32,16 +32,17 @@ login_table = Table(
 class Login(meta.Indexable):
 
     def __init__(self, access_time, ip_adress, user, success):
-        self.access_time = datetime.utcnow()
+        self.access_time = datetime.datetime.utcnow()
         self.ip_address = ip_adress
         self.user = user
         self.success = success
 
     @classmethod
-    def get(cls, user):
-        l = meta.Session.query(cls)
-        l = l.filter(cls.user == user)
-        return l.last
+    def count_logs(cls, user):
+        q = meta.Session.query(cls)
+        q = q.filter(cls.user == user, cls.success == 'no',
+                     ((datetime.datetime.utcnow() - datetime.timedelta(hours=10))< cls.access_time) )
+        return q.count()
 
     @classmethod
     def create(cls, access_time, ip_adress, user, success):

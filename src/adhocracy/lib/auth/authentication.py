@@ -75,13 +75,22 @@ class EmailSQLAlchemyAuthenticatorPlugin(_EmailBaseSQLAlchemyPlugin,
         user = self.get_user(identity['login'])
 
         if user:
+            amount = model.login.Login.count_logs(user.user_name)
+            print "******************************"
+            print amount
+            print "******************************"
+            #check if unsuccessful logins
             validator = getattr(user, self.translations['validate_password'])
             if validator(identity['password']):
+                #user_log creates entry to loginlog
                 user_log = model.login.Login.create(datetime.utcnow(),
-                                          123, user.user_name , u'yes')
+                                                    123, user.user_name,
+                                                    u'yes')
                 return user.user_name
+            #user_log creates entry to loginlog
             user_log = model.login.Login.create(datetime.utcnow(),
-                          123, user.user_name, u'no')
+                                                123, user.user_name,
+                                                u'no')
 
 
 class EmailSQLAlchemyUserMDPlugin(_EmailBaseSQLAlchemyPlugin,
