@@ -22,7 +22,7 @@ from sqlalchemy import MetaData
 login_table = Table(
     'loginlog', meta.data,
     Column('id', Integer, primary_key=True),
-    Column('access_time', DateTime ),
+    Column('access_time', DateTime),
     Column('ip_address', Unicode(255), nullable=True),
     Column('user', UnicodeText()),
     Column('success', UnicodeText())
@@ -37,11 +37,13 @@ class Login(meta.Indexable):
         self.user = user
         self.success = success
 
+    # def count returns amount of unsuccessful logins of past hour
     @classmethod
     def count_logs(cls, user):
         q = meta.Session.query(cls)
         q = q.filter(cls.user == user, cls.success == 'no',
-                     ((datetime.datetime.utcnow() - datetime.timedelta(hours=10))< cls.access_time) )
+                     ((datetime.datetime.utcnow()
+                      - datetime.timedelta(hours=1)) < cls.access_time))
         return q.count()
 
     @classmethod

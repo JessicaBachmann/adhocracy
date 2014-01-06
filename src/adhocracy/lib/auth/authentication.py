@@ -19,6 +19,8 @@ from webob import Request
 from adhocracy.model.login import Login, login_table
 from datetime import datetime
 import adhocracy.lib.util
+import time
+import math
 
 log = logging.getLogger(__name__)
 
@@ -75,21 +77,21 @@ class EmailSQLAlchemyAuthenticatorPlugin(_EmailBaseSQLAlchemyPlugin,
         user = self.get_user(identity['login'])
 
         if user:
+            #count_logs return amount of unsuccessful logins for the past hour
             amount = model.login.Login.count_logs(user.user_name)
-            print "******************************"
-            print amount
-            print "******************************"
-            #check if unsuccessful logins
+            ip = adhocracy.lib.util.get_client_ip(environ)
+            if (amount > 5):
+                time.sleep(pow(2, (amount-5)))
             validator = getattr(user, self.translations['validate_password'])
             if validator(identity['password']):
                 #user_log creates entry to loginlog
                 user_log = model.login.Login.create(datetime.utcnow(),
-                                                    123, user.user_name,
+                                                    ip, user.user_name,
                                                     u'yes')
                 return user.user_name
             #user_log creates entry to loginlog
             user_log = model.login.Login.create(datetime.utcnow(),
-                                                123, user.user_name,
+                                                ip, user.user_name,
                                                 u'no')
 
 

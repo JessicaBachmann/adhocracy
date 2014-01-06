@@ -49,7 +49,6 @@ from adhocracy.lib.queue import update_entity
 from adhocracy.lib.util import get_entity_or_abort, random_token
 from adhocracy.lib.event.types import (S_VOTE, S_DELEGATION, S_PROPOSAL,
                                        S_COMMENT, S_PAGE, S_CONTRIBUTION)
-from adhocracy.model.login import Login 
 import adhocracy.lib.util
 
 log = logging.getLogger(__name__)
@@ -1046,9 +1045,6 @@ class UserController(BaseController):
 
     def post_login(self):
         if c.user:
-#            full_ip = adhocracy.lib.util.get_client_ip(request.environ)
-#            user_log = model.Login.create(datetime.utcnow(),
-#                                          full_ip, c.user_name, u'yes')
             session['logged_in'] = True
             session.save()
             came_from = request.params.get('came_from', None)
